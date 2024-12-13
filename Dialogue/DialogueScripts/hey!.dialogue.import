@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://c5flxiq6w6xjv"
+path="res://.godot/imported/hey!.dialogue-158deb33dff8e022a2d93a422fb03516.tres"
+
+[deps]
+
+source_file="res://Dialogue/DialogueScripts/hey!.dialogue"
+dest_files=["res://.godot/imported/hey!.dialogue-158deb33dff8e022a2d93a422fb03516.tres"]
+
+[params]
+
+defaults=true

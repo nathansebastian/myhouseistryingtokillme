@@ -1,30 +1,165 @@
-[gd_scene load_steps=4 format=3 uid="uid://daeswukc8gew0"]
+[gd_scene load_steps=21 format=3 uid="uid://daeswukc8gew0"]
 
+[ext_resource type="Shader" path="res://Shaders/hit.gdshader" id="1_1e3o4"]
 [ext_resource type="Texture2D" uid="uid://k8saju7n2npd" path="res://icon.svg" id="1_xj6ye"]
 [ext_resource type="PackedScene" uid="uid://x1wr60a6pkll" path="res://Scenes/player.tscn" id="2_dm75i"]
 [ext_resource type="PackedScene" uid="uid://c8kwprvu7wt1x" path="res://Scenes/area_2d.tscn" id="3_erh2u"]
+[ext_resource type="Script" path="res://Scenes/enemy_controller.gd" id="3_ha4lf"]
+[ext_resource type="Script" path="res://Scripts/dialogue_handler.gd" id="4_4lwix"]
+[ext_resource type="PackedScene" uid="uid://73jm5qjy52vq" path="res://addons/dialogue_manager/example_balloon/example_balloon.tscn" id="5_d1b70"]
+[ext_resource type="PackedScene" uid="uid://13s5spsk34qu" path="res://addons/dialogue_manager/example_balloon/small_example_balloon.tscn" id="6_f5huy"]
+[ext_resource type="Resource" uid="uid://6p6ctvow45ij" path="res://Dialogue/DialogueScripts/helloworld.dialogue" id="7_b33np"]
+[ext_resource type="Resource" uid="uid://c5flxiq6w6xjv" path="res://Dialogue/DialogueScripts/hey!.dialogue" id="8_hs8tt"]
+[ext_resource type="Shader" path="res://Shaders/crt.gdshader" id="11_vqs4b"]
+[ext_resource type="Shader" path="res://Shaders/screen_effect.gdshader" id="12_we5n3"]
+[ext_resource type="Script" path="res://Scripts/line_renderer.gd" id="13_0vlpn"]
 
-[node name="Node2D" type="Node2D"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0b4qk"]
+shader = ExtResource("1_1e3o4")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/_alpha = 0.0
 
-[node name="Sprite2D2" type="Sprite2D" parent="."]
-position = Vector2(539, 292)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvb1v"]
+size = Vector2(127, 130)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bc6ug"]
+radius = 245.345
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_37xpv"]
+radius = 73.2462
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xbyg5"]
+shader = ExtResource("11_vqs4b")
+shader_parameter/overlay = true
+shader_parameter/scanlines_opacity = 0.4
+shader_parameter/scanlines_width = 0.25
+shader_parameter/grille_opacity = 0.3
+shader_parameter/resolution = Vector2(1366, 768)
+shader_parameter/pixelate = true
+shader_parameter/roll = true
+shader_parameter/roll_speed = 8.0
+shader_parameter/roll_size = 15.0
+shader_parameter/roll_variation = 0.366
+shader_parameter/distort_intensity = 0.05
+shader_parameter/noise_opacity = 0.4
+shader_parameter/noise_speed = 5.0
+shader_parameter/static_noise_intensity = 0.06
+shader_parameter/aberration = 0.03
+shader_parameter/brightness = 1.4
+shader_parameter/discolor = true
+shader_parameter/warp_amount = 0.282
+shader_parameter/clip_warp = false
+shader_parameter/vignette_intensity = 0.4
+shader_parameter/vignette_opacity = 0.22
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8aqeb"]
+shader = ExtResource("12_we5n3")
+
+[sub_resource type="QuadMesh" id="QuadMesh_wla2f"]
+size = Vector2(1280, 720)
+
+[node name="Level" type="Node2D"]
+
+[node name="Floor" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_0b4qk")
+position = Vector2(596, 376)
 scale = Vector2(8.31641, 5.8125)
 texture = ExtResource("1_xj6ye")
 
 [node name="Player" parent="." instance=ExtResource("2_dm75i")]
-position = Vector2(1, -1)
+position = Vector2(550, 64)
+collision_mask = 17
 
-[node name="Area2D" parent="." instance=ExtResource("3_erh2u")]
-message_string = "Rightest"
+[node name="DrawLine" type="Node2D" parent="Player"]
+position = Vector2(-1, 3)
+scale = Vector2(0.5, 0.5)
+script = ExtResource("13_0vlpn")
 
-[node name="Area2D2" parent="." instance=ExtResource("3_erh2u")]
-position = Vector2(460, 260)
-message_string = "Leftest"
+[node name="Enemy" type="CharacterBody2D" parent="."]
+position = Vector2(414, 340)
+collision_layer = 16
+script = ExtResource("3_ha4lf")
+receiver_node_name = "HitReceiver"
 
-[node name="Area2D3" parent="." instance=ExtResource("3_erh2u")]
-position = Vector2(562, 113)
-message_string = "HmmMmm"
+[node name="InteractionController" parent="Enemy" node_paths=PackedStringArray("dialogue_handler") instance=ExtResource("3_erh2u")]
+position = Vector2(0, 0)
+dialogue_handler = NodePath("Dialogue_Handler")
 
-[node name="Area2D4" parent="." instance=ExtResource("3_erh2u")]
-position = Vector2(562, 407)
-message_string = "Lowest"
+[node name="Dialogue_Handler" type="Node2D" parent="Enemy/InteractionController"]
+script = ExtResource("4_4lwix")
+Balloon = ExtResource("5_d1b70")
+SmallBalloon = ExtResource("6_f5huy")
+dialogue_resource = ExtResource("8_hs8tt")
+
+[node name="CharacterCollidor" type="CollisionShape2D" parent="Enemy"]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_uvb1v")
+
+[node name="AlertBox" type="Area2D" parent="Enemy"]
+collision_layer = 8
+
+[node name="AlertBoxCollidor" type="CollisionShape2D" parent="Enemy/AlertBox"]
+shape = SubResource("CircleShape2D_bc6ug")
+
+[node name="AttackArea" type="Area2D" parent="Enemy"]
+collision_layer = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Enemy/AttackArea"]
+shape = SubResource("CircleShape2D_37xpv")
+
+[node name="DrawLine" type="Node2D" parent="Enemy"]
+script = ExtResource("13_0vlpn")
+
+[node name="PointA" type="Node2D" parent="Enemy"]
+
+[node name="PointB" type="Node2D" parent="Enemy"]
+position = Vector2(103, 0)
+
+[node name="Box" parent="." node_paths=PackedStringArray("dialogue_handler") instance=ExtResource("3_erh2u")]
+position = Vector2(859, 399)
+dialogue_handler = NodePath("Dialogue_Handler")
+
+[node name="Dialogue_Handler" type="Node2D" parent="Box"]
+script = ExtResource("4_4lwix")
+Balloon = ExtResource("5_d1b70")
+SmallBalloon = ExtResource("6_f5huy")
+dialogue_resource = ExtResource("7_b33np")
+
+[node name="Box2" parent="." node_paths=PackedStringArray("dialogue_handler") instance=ExtResource("3_erh2u")]
+position = Vector2(788, 226)
+dialogue_handler = NodePath("Dialogue_Handler")
+
+[node name="Dialogue_Handler" type="Node2D" parent="Box2"]
+script = ExtResource("4_4lwix")
+Balloon = ExtResource("5_d1b70")
+SmallBalloon = ExtResource("6_f5huy")
+dialogue_resource = ExtResource("7_b33np")
+
+[node name="Control" type="Control" parent="."]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1282.2
+offset_bottom = 716.965
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+material = SubResource("ShaderMaterial_xbyg5")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+offset = Vector2(640.15, 358.505)
+transform = Transform2D(1, 0, 0, 1, 640.15, 358.505)
+follow_viewport_enabled = true
+
+[node name="MeshInstance2D" type="MeshInstance2D" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_8aqeb")
+mesh = SubResource("QuadMesh_wla2f")
+
+[connection signal="body_entered" from="Enemy/AlertBox" to="Enemy" method="_on_alert_box_body_entered"]
+[connection signal="body_exited" from="Enemy/AlertBox" to="Enemy" method="_on_alert_box_body_exited"]
+[connection signal="body_entered" from="Enemy/AttackArea" to="Enemy" method="_on_attack_area_body_entered"]

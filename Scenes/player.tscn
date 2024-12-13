@@ -1,11 +1,18 @@
-[gd_scene load_steps=6 format=3 uid="uid://x1wr60a6pkll"]
+[gd_scene load_steps=9 format=3 uid="uid://x1wr60a6pkll"]
 
+[ext_resource type="Shader" path="res://Shaders/hit.gdshader" id="1_hyy0h"]
 [ext_resource type="Script" path="res://Scripts/character_controller.gd" id="1_omsel"]
 [ext_resource type="Texture2D" uid="uid://k8saju7n2npd" path="res://icon.svg" id="2_k48bo"]
 [ext_resource type="Script" path="res://Scripts/interaction_radius.gd" id="3_3gacs"]
+[ext_resource type="Script" path="res://Scripts/receiver.gd" id="4_smcsc"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_g1rqh"]
-size = Vector2(119, 115)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x6bvw"]
+size = Vector2(116, 123)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ojux"]
+shader = ExtResource("1_hyy0h")
+shader_parameter/color = Color(1, 0, 0, 1)
+shader_parameter/_alpha = 0.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_dwwbp"]
 radius = 300.0
@@ -14,10 +21,11 @@ radius = 300.0
 script = ExtResource("1_omsel")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0.5, -0.5)
-shape = SubResource("RectangleShape2D_g1rqh")
+position = Vector2(0, 0.5)
+shape = SubResource("RectangleShape2D_x6bvw")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+material = SubResource("ShaderMaterial_3ojux")
 texture = ExtResource("2_k48bo")
 
 [node name="InteractionRadius" type="Area2D" parent="."]
@@ -27,5 +35,9 @@ script = ExtResource("3_3gacs")
 
 [node name="InteractionCollisionShape" type="CollisionShape2D" parent="InteractionRadius"]
 shape = SubResource("CircleShape2D_dwwbp")
+
+[node name="HitReceiver" type="Node" parent="."]
+script = ExtResource("4_smcsc")
+func_name = "hit"
 
 [connection signal="on_interaction_pressed" from="." to="InteractionRadius" method="_on_player_on_interaction_pressed"]

@@ -34,5 +34,7 @@ func disable_activity():
 			interactable_.interact_icon.visible = false
 
 func _on_player_on_interaction_pressed():
-	if(closest_interactable!= null):
-		closest_interactable._message()
+	print(closest_interactable)
+	for interactable_ in interactables_array:
+		if interactable_ == closest_interactable:
+			closest_interactable.dialogue_handler.start_dialogue()

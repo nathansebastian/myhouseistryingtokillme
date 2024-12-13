@@ -1,0 +1,15 @@
+[remap]
+
+importer="dialogue_manager_compiler_13"
+type="Resource"
+uid="uid://6p6ctvow45ij"
+path="res://.godot/imported/helloworld.dialogue-f607ababc20d88286e5def05b375b120.tres"
+
+[deps]
+
+source_file="res://Dialogue/DialogueScripts/helloworld.dialogue"
+dest_files=["res://.godot/imported/helloworld.dialogue-f607ababc20d88286e5def05b375b120.tres"]
+
+[params]
+
+defaults=true
