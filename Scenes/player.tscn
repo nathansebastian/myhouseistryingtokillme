@@ -1,10 +1,10 @@
 [gd_scene load_steps=9 format=3 uid="uid://x1wr60a6pkll"]
 
-[ext_resource type="Shader" path="res://Shaders/hit.gdshader" id="1_hyy0h"]
-[ext_resource type="Script" path="res://Scripts/character_controller.gd" id="1_omsel"]
+[ext_resource type="Shader" uid="uid://vjggi5jkjboi" path="res://Shaders/hit.gdshader" id="1_hyy0h"]
+[ext_resource type="Script" uid="uid://3juibugdkbj" path="res://Scripts/character_controller.gd" id="1_omsel"]
 [ext_resource type="Texture2D" uid="uid://k8saju7n2npd" path="res://icon.svg" id="2_k48bo"]
-[ext_resource type="Script" path="res://Scripts/interaction_radius.gd" id="3_3gacs"]
-[ext_resource type="Script" path="res://Scripts/receiver.gd" id="4_smcsc"]
+[ext_resource type="Script" uid="uid://bgdkud23xbrqr" path="res://Scripts/interaction_radius.gd" id="3_3gacs"]
+[ext_resource type="Script" uid="uid://bfjsmplreu1ja" path="res://Scripts/receiver.gd" id="4_smcsc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_x6bvw"]
 size = Vector2(116, 123)
